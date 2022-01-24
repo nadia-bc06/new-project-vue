@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    users: JSON.parse(localStorage.getItem("users"))||[] ,
+    users: JSON.parse(localStorage.getItem("users")) || [],
     user: JSON.parse(localStorage.getItem("user")),
     filterType: "all",
     taskList: [
@@ -46,6 +46,10 @@ export const store = new Vuex.Store({
       state.taskList.unshift(newTask)
     },
 
+    updateCheckStatus(state, { index, updatedStatus }) {
+      state.taskList[index].isDone = updatedStatus
+    },
+
     remove_task(state, index) {
       state.taskList.splice(index, 1)
     },
@@ -70,25 +74,27 @@ export const store = new Vuex.Store({
       state.user = localStorage.getItem("user")
     },
     addUser(state, payload) {
-			let users = JSON.parse(localStorage.getItem('users')) || [];
-			users.push(payload);
-		
+      let users = JSON.parse(localStorage.getItem("users")) || []
+      users.push(payload)
+
       localStorage.setItem("users", JSON.stringify(users))
     },
-    updateInfo(state, payload){
-    
-      let users = state.users;
-      let index = users.findIndex(user => user.id === payload.id);
+    updateInfo(state, payload) {
+      let users = state.users
+      let index = users.findIndex((user) => user.id === payload.id)
       state.users[index].name = payload.name
       state.users[index].email = payload.email
       state.users[index].gender = payload.gender
-      localStorage.setItem('user', JSON.stringify(payload))
-      localStorage.setItem('users', JSON.stringify(users))
-    }
+      localStorage.setItem("user", JSON.stringify(payload))
+      localStorage.setItem("users", JSON.stringify(users))
+    },
   },
   actions: {
-    updateInfo({commit} , payload){
-      commit('updateInfo' , payload)
+    updateCheckStatus({ commit }, { index, updatedStatus }) {
+      commit("updateCheckStatus", { index, updatedStatus })
+    },
+    updateInfo({ commit }, payload) {
+      commit("updateInfo", payload)
     },
     addNewTask({ commit }, newTask) {
       commit("add_new_task", newTask)
@@ -113,8 +119,8 @@ export const store = new Vuex.Store({
       router.push("/todos")
     },
     register({ commit }, payload) {
-			commit("addUser" , payload)
-			router.push("/login")
-		},
+      commit("addUser", payload)
+      router.push("/login")
+    },
   },
 })

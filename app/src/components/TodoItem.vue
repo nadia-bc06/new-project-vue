@@ -1,7 +1,11 @@
 <template>
   <v-row>
     <v-col cols="2" class="task-item-status">
-      <input type="checkbox" v-model="isDone" />
+      <input
+        type="checkbox"
+        v-model="isDone"
+        @change="checkStatus($event, index)"
+      />
     </v-col>
 
     <v-col cols="5" class="task-item-content">
@@ -10,7 +14,7 @@
 
     <v-col cols="5" class="task-item-controls">
       <v-btn color="primary" class="mr-2" @click="editTask">{{
-        !isEdit ? 'Edit' : 'Save'
+        !isEdit ? "Edit" : "Save"
       }}</v-btn>
       <v-btn color="error" @click="removeTask(index)">Del</v-btn>
     </v-col>
@@ -18,46 +22,54 @@
 </template>
 
 <script>
-import { ref } from '@vue/composition-api';
+import { ref } from "@vue/composition-api"
 
 export default {
-  name: 'TodoItem',
+  name: "TodoItem",
 
-  props: ['task', 'index'],
+  props: ["task", "index"],
 
   setup(props, { root }) {
-    const isEdit = ref(false);
-    const { task } = props;
-    const taskTitle = ref(task.title);
-    const isDone = ref(false);
+    const isEdit = ref(false)
+    const { task } = props
+    const taskTitle = ref(task.title)
+    const isDone = ref(task.isDone)
 
-    const beforeEditVal = ref('');
+    const beforeEditVal = ref("")
 
     function editTask() {
       if (isEdit.value) {
-        isEdit.value = false;
-        doneEditTask();
+        isEdit.value = false
+        doneEditTask()
       } else {
-        beforeEditVal.value = taskTitle.value;
-        isEdit.value = true;
+        beforeEditVal.value = taskTitle.value
+        isEdit.value = true
       }
     }
 
     const saveTask = () => {
-      isEdit.value = false;
-    };
+      isEdit.value = false
+    }
 
     const doneEditTask = () => {
-      root.$store.dispatch('updateTask', {
+      root.$store.dispatch("updateTask", {
         id: task.id,
         title: taskTitle,
         isDone: isDone,
-      });
-    };
+      })
+    }
+
+    const checkStatus = ($event, index) => {
+      let updatedStatus = $event.target.checked
+      root.$store.dispatch("updateCheckStatus", {
+        index,
+        updatedStatus,
+      })
+    }
 
     const removeTask = (index) => {
-      root.$store.dispatch('removeTask', index);
-    };
+      root.$store.dispatch("removeTask", index)
+    }
 
     return {
       isDone,
@@ -67,9 +79,10 @@ export default {
       isEdit,
       saveTask,
       taskTitle,
-    };
+      checkStatus,
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
