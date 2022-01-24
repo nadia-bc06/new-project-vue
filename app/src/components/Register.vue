@@ -30,14 +30,15 @@
             v-model="password"
             :rules="passwordRules"
             label="Password"
-            type="password"  
+            type="password"
             required
           ></v-text-field>
+          <br>
 
           <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>
 
           <v-btn color="primary" @click="submitRegister"> Submit </v-btn>
-        </v-form>
+        </v-form><br>
         <span
           >Already Register? <router-link to="/login">Go to login!</router-link>
         </span>
@@ -47,47 +48,60 @@
 </template>
 
 <script>
+import { ref } from "@vue/composition-api"
 export default {
-  data: () => ({
-    valid: true,
-    name: "",
-    nameRules: [(v) => !!v || "Name is required"],
-    email: "",
-    emailRules: [
+  setup(_, { refs, root }) {
+    const valid = ref(true)
+    const name = ref("")
+    const nameRules = [(v) => !!v || "Name is required"]
+    const email = ref("")
+    const emailRules = [
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    gender: null,
-    items: ["Male", "Female", "Other"],
-    password: "",
-    passwordRules: [(v) => !!v || "Password is required"],
-  }),
+    ]
+    const gender = ref(null)
+    const items = ["Male", "Female", "Other"]
+    const password = ref("")
+    const passwordRules = [(v) => !!v || "Password is required"]
 
-  methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
-    submitRegister() {
-      const isValid = this.$refs.form.validate()
+    const reset = () => {
+      refs.form.reset()
+    }
+
+    const submitRegister = () => {
+      const isValid = refs.form.validate()
       if (isValid) {
         let users = JSON.parse(localStorage.getItem("users")) || []
+     
         let user = {
-          name: this.name,
-          email: this.email,
-          gender: this.gender,
-          password: this.password,
+          name: name.value,
+          email: email.value,
+          gender: gender.value,
+          password: password.value,
         }
-        let index = users.findIndex((user) => user.email === this.email)
+        let index = users.findIndex((user) => user.email === email.value)
         if (index == -1) {
-          users.push(user)
-          localStorage.setItem("users", JSON.stringify(users))
+          root.$store.dispatch("register", user)
+
           alert("Register successfully")
-          this.$router.push("/login")
-        }else {
-          alert('User da ton tai')
+        } else {
+          alert("User da ton tai")
         }
       }
-    },
+    }
+    return {
+      valid,
+      name,
+      nameRules,
+      email,
+      emailRules,
+      gender,
+      items,
+      password,
+      passwordRules,
+      reset,
+      submitRegister,
+    }
   },
 }
 </script>

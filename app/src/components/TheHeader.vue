@@ -14,7 +14,7 @@
 
     <div class="d-flex justify-space-between" style="width: 100%">
       <v-app-bar-title>{{ title }}</v-app-bar-title>
-      <v-btn class="success" @click="logOut">Log Out</v-btn>
+      <v-btn class="error" @click="logOut">Log Out</v-btn>
     </div>
 
     <template v-slot:extension>

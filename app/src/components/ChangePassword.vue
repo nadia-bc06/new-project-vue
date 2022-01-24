@@ -37,48 +37,52 @@
 </template>
 
 <script>
+import { ref } from "@vue/composition-api"
 export default {
-  data() {
-    return {
-      password: JSON.parse(localStorage.getItem("user")).password,
-      oldPassword: "",
+  setup(_, { refs, root }) {
+    const user = root.$store.state.user
+    const { password } = user
+    const oldPassword = ref("")
+    const newPassword = ref("")
+    const confirmedPassword = ref("")
+    const passwordRules = [(v) => !!v || "Password is required"]
 
-      newPassword: "",
-
-      confirmedPassword: "",
-      passwordRules: [(v) => !!v || "Password is required"],
-    }
-  },
-  methods: {
-    changePassword() {
-      const isValid = this.$refs.form.validate()
+    const changePassword = () => {
+      const isValid =  refs.form.validate()
       if (isValid) {
-        if (this.password === this.oldPassword) {
-          if (this.confirmedPassword === this.newPassword) {
-            let user = JSON.parse(localStorage.getItem('user'))
-            let email = user.email;
+        if (password === oldPassword.value) {
+          if (confirmedPassword.value === newPassword.value) {
+            
+            let email = user.email
             let updatedUser = {
               ...user,
-              password: this.newPassword
-            };
-            localStorage.setItem('user', JSON.stringify(updatedUser));
+              password: newPassword.value,
+            }
 
-            let users = JSON.parse(localStorage.getItem('users'))
-            let index = users.findIndex(user => user.email === email);
-            if(index !== -1){
-              users.splice(index , 1 , updatedUser)
-              localStorage.setItem('users' , JSON.stringify(users))
-              alert('Password changed successfully');
-              this.$router.push('/user')
+            localStorage.setItem("user", JSON.stringify(updatedUser))
+
+            let users = JSON.parse(localStorage.getItem("users"))
+            let index = users.findIndex((user) => user.email === email)
+            if (index !== -1) {
+              users.splice(index, 1, updatedUser)
+              localStorage.setItem("users", JSON.stringify(users))
+              alert("Password changed successfully")
+              root.$router.push("/user")
             }
-            
-          } else{
+          } else {
             alert("Wrong confirmed password")
-            }
-          
+          }
         } else alert("Wrong old password")
       }
-    },
+    }
+
+    return {
+      oldPassword,
+      newPassword,
+      confirmedPassword,
+      passwordRules,
+      changePassword,
+    }
   },
 }
 </script>

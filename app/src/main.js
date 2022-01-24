@@ -4,6 +4,9 @@ import vuetify from './plugins/vuetify'
 import VueCompositionApi from '@vue/composition-api'
 import router from './router'
 import {store} from  './../src/store'
+import CxltToastr from 'cxlt-vue2-toastr'
+
+Vue.use(CxltToastr)
 
 Vue.config.productionTip = false
 

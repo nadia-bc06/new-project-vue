@@ -44,14 +44,8 @@ export default {
       return root.$store.getters.filteredTasks
     })
 
-    const removeTask = () => {}
-
-    const doneEditTask = () => {}
-
     return {
       filteredTasks,
-      removeTask,
-      doneEditTask
     }
   },
 }

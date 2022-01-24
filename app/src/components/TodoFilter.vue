@@ -5,12 +5,14 @@
       @click="changeFilterType('all')"
       >All</v-btn
     >
-    <v-btn
+    <v-btn 
+      class="ml-2"
       :class="{ active: filterType === 'active' }"
       @click="changeFilterType('active')"
       >Active</v-btn
     >
     <v-btn
+      class="ml-2"
       :class="{ active: filterType === 'done' }"
       @click="changeFilterType('done')"
       >Done</v-btn
