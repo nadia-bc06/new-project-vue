@@ -61,12 +61,7 @@ export default {
           if (user) {
             if (user.password === password.value) {
               root.$store.dispatch("login", { user, token: user.password })
-
-              // this.$toast.success({
-              //   title: "Login thanh cong",
-              //   message: "Welcome",
-              //   position: "top right",
-              // })
+              console.log(root.$store.getters.user);
               alert("login thanh cong")
             } else alert("Wrong login password")
           }

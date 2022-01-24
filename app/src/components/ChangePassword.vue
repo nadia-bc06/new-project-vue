@@ -21,7 +21,7 @@
 
           <v-text-field
             v-model="confirmedPassword"
-            :rules="passwordRules"
+            :rules="confirmedPasswordRules"
             type="password"
             label="Enter new password again "
             required
@@ -45,32 +45,31 @@ export default {
     const oldPassword = ref("")
     const newPassword = ref("")
     const confirmedPassword = ref("")
+    const confirmedPasswordRules = [
+      (v) => !!v || "Password is required",
+      (v) => (v === newPassword.value ? true : "Nhap lai chua dung"),
+    ]
+
     const passwordRules = [(v) => !!v || "Password is required"]
 
     const changePassword = () => {
-      const isValid =  refs.form.validate()
+      const isValid = refs.form.validate()
       if (isValid) {
         if (password === oldPassword.value) {
-          if (confirmedPassword.value === newPassword.value) {
-            
-            let email = user.email
-            let updatedUser = {
-              ...user,
-              password: newPassword.value,
-            }
+          let email = user.email
+          let updatedUser = {
+            ...user,
+            password: newPassword.value,
+          }
+          localStorage.setItem("user", JSON.stringify(updatedUser))
 
-            localStorage.setItem("user", JSON.stringify(updatedUser))
-
-            let users = JSON.parse(localStorage.getItem("users"))
-            let index = users.findIndex((user) => user.email === email)
-            if (index !== -1) {
-              users.splice(index, 1, updatedUser)
-              localStorage.setItem("users", JSON.stringify(users))
-              alert("Password changed successfully")
-              root.$router.push("/user")
-            }
-          } else {
-            alert("Wrong confirmed password")
+          let users = JSON.parse(localStorage.getItem("users"))
+          let index = users.findIndex((user) => user.email === email)
+          if (index !== -1) {
+            users.splice(index, 1, updatedUser)
+            localStorage.setItem("users", JSON.stringify(users))
+            alert("Password changed successfully")
+            root.$router.push("/user")
           }
         } else alert("Wrong old password")
       }
@@ -80,6 +79,7 @@ export default {
       oldPassword,
       newPassword,
       confirmedPassword,
+      confirmedPasswordRules,
       passwordRules,
       changePassword,
     }

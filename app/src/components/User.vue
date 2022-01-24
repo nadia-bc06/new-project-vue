@@ -29,8 +29,9 @@
             required
           ></v-select>
         </v-form>
-
+        <br />
         <v-btn
+          class="mb-2"
           type="button"
           :color="isEdit ? 'success' : 'primary'"
           @click="onEdit"
@@ -38,8 +39,9 @@
           {{ isEdit ? "Save changes" : "Edit info" }}</v-btn
         >
 
-        <br />
-        <router-link to="/change-password">Wanna change password? </router-link>
+        <router-link style="display: block" to="/change-password"
+          >Wanna change password?
+        </router-link>
       </v-col>
     </v-row>
   </div>
@@ -49,7 +51,7 @@
 import { ref } from "@vue/composition-api"
 export default {
   setup(_, { root, refs }) {
-    const user = root.$store.state.user
+    const user = root.$store.getters.user
 
     const valid = ref(true)
     const name = ref(user.name)
@@ -103,4 +105,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep .v-input--is-disabled input, .v-select .v-select__selection--disabled {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+::v-deep .theme--light.v-select .v-select__selection--disabled {
+  color: rgba(0, 0, 0, 0.87);
+}
+</style>

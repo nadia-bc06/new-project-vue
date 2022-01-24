@@ -71,7 +71,7 @@ export const store = new Vuex.Store({
     },
     setUser(state, payload) {
       localStorage.setItem("user", JSON.stringify(payload))
-      state.user = localStorage.getItem("user")
+      state.user = JSON.parse(localStorage.getItem("user"))
     },
     addUser(state, payload) {
       let users = JSON.parse(localStorage.getItem("users")) || []
