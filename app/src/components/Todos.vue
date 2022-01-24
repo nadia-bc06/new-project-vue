@@ -16,8 +16,6 @@
             <todo-item
               :task="task"
               :index="index"
-              @removeTask="removeTask"
-              @doneEditTask="doneEditTask"
             ></todo-item>
           </v-list-item>
         </v-list>
@@ -46,8 +44,14 @@ export default {
       return root.$store.getters.filteredTasks
     })
 
+    const removeTask = () => {}
+
+    const doneEditTask = () => {}
+
     return {
       filteredTasks,
+      removeTask,
+      doneEditTask
     }
   },
 }

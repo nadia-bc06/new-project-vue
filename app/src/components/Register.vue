@@ -19,7 +19,7 @@
           ></v-text-field>
 
           <v-select
-            v-model="select"
+            v-model="gender"
             :items="items"
             :rules="[(v) => !!v || 'Item is required']"
             label="Gender"
@@ -30,6 +30,7 @@
             v-model="password"
             :rules="passwordRules"
             label="Password"
+            type="password"  
             required
           ></v-text-field>
 
@@ -56,7 +57,7 @@ export default {
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
-    select: null,
+    gender: null,
     items: ["Male", "Female", "Other"],
     password: "",
     passwordRules: [(v) => !!v || "Password is required"],
@@ -73,7 +74,7 @@ export default {
         let user = {
           name: this.name,
           email: this.email,
-          gender: this.select,
+          gender: this.gender,
           password: this.password,
         }
         let index = users.findIndex((user) => user.email === this.email)

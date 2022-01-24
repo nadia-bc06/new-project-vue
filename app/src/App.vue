@@ -1,10 +1,7 @@
 <template>
   <v-app id="app">
-    <the-header></the-header>
-    <div id="nav">
-      <!-- <router-link to="/">Home</router-link> | -->
-      <!-- <router-link to="/about">About</router-link> -->
-    </div>
+    <the-header v-if="isAuthenticated"></the-header>
+
     <v-spacer></v-spacer>
 
     <v-main>
@@ -12,20 +9,27 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-
-    <!-- <the-footer></the-footer> -->
   </v-app>
 </template>
 
 <script>
-import TheHeader from "@/components/TheHeader.vue"
-// import TheFooter from "./components/TheFooter.vue"
+import TheHeader from '@/components/TheHeader.vue';
+import { store } from '@/store';
+import { computed } from '@vue/composition-api';
+
 export default {
   components: {
     TheHeader,
-    // TheFooter,
   },
-}
+
+  setup() {
+    const isAuthenticated = computed(() => !!store.getters['token']);
+
+    return {
+      isAuthenticated,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
